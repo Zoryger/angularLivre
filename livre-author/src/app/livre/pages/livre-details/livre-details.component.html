@@ -1,5 +1,5 @@
 <button mat-raised-button (click)="goBack()">Retour</button>
-<app-Livre-card
-  [selectedLivre]="Livre$ | async"
+<app-livre-card
+  [selectedLivre]="livre$ | async"
   (received)="showReceivedValue($event)"
-></app-Livre-card>
+></app-livre-card>

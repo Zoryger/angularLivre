@@ -18,12 +18,12 @@ export class LivreService {
 }
 
 
-update(Livre: Livre): Observable<string>{
-  return this.http.put<string>(environment.iutApiBaseUrl+"/livres/"+Livre.id, Livre);
+update(livre: Livre): Observable<string>{
+  return this.http.put<string>(environment.iutApiBaseUrl+"/livres/"+livre.id, livre);
 }
 
-create(Livre: Livre): Observable<string>{
-  return this.http.post<string>(environment.iutApiBaseUrl+"/livres", Livre);
+create(livre: Livre): Observable<string>{
+  return this.http.post<string>(environment.iutApiBaseUrl+"/livres", livre);
 }
 
 getById(id: number): Observable<Livre>{

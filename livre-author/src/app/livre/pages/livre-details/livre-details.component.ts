@@ -6,25 +6,25 @@ import { LivreService } from '../../services/livre.service';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-Livre-details',
-  templateUrl: './Livre-details.component.html',
-  styleUrls: ['./Livre-details.component.scss']
+  selector: 'app-livre-details',
+  templateUrl: './livre-details.component.html',
+  styleUrls: ['./livre-details.component.scss']
 })
 export class LivreDetailsComponent implements OnInit {
 
-  LivreId!: number;
-  Livre$!: Observable<Livre>;
+  livreId!: number;
+  livre$!: Observable<Livre>;
 
-  constructor(private route: ActivatedRoute, private LivreService: LivreService, private location: Location){
+  constructor(private route: ActivatedRoute, private livreService: LivreService, private location: Location){
      route.params.subscribe(params => {
-      this.LivreId = params["id"];
+      this.livreId = params["id"];
      })
     
     }
 
     ngOnInit(): void {
-      if(this.LivreId){
-        this.Livre$ = this.LivreService.getById(this.LivreId);
+      if(this.livreId){
+        this.livre$ = this.livreService.getById(this.livreId);
       }
     }
 

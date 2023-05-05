@@ -9,7 +9,7 @@ import { Livre } from '../../models/livre';
 import { LivreService } from '../../services/livre.service';
 
 @Component({
-  selector: 'app-Livre-list',
+  selector: 'app-livre-list',
   templateUrl: './livre-list.component.html',
   styleUrls: ['./livre-list.component.sass']
 })
@@ -18,19 +18,19 @@ export class LivreListComponent implements OnInit, OnDestroy{
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  Livres$: Observable<Livre[]>;
+  livres$!: Observable<Livre[]>;
 
-  displayedColumns: string[] = ['firstName', 'lastName', 'class', 'email', 'update', 'delete'];
+  displayedColumns: string[] = ['author', 'price', 'publicationDate', 'title', 'update', 'delete'];
   
-  constructor(private LivreService: LivreService, private dialog: MatDialog, private _snackBar: MatSnackBar, private router: Router){}
+  constructor(private livreService: LivreService, private dialog: MatDialog, private _snackBar: MatSnackBar, private router: Router){}
   
-  openLivreForm(Livre?: Livre) {
+  openLivreForm(livre?: Livre) {
     const dialogRef = this.dialog.open(LivreFormComponent, {
       height: '85%',
       width: '60%',
       data: {
-        isCreateForm: Livre ? false : true,
-        Livre: Livre ? Livre : undefined
+        isCreateForm: livre ? false : true,
+        livre: livre ? livre : undefined
       }
     });
 
@@ -53,14 +53,14 @@ export class LivreListComponent implements OnInit, OnDestroy{
   }
 
   fetchData() {
-    this.Livres$ = this.LivreService.get();
+    this.livres$ = this.livreService.get();
   }
   
   delete(id: number) {
     const ref = this.dialog.open(GenericPopupComponent, {
       data: {
         title: 'Confirmation de suppression',
-        message: 'êtes-vous sûr de vouloir supprimer cet étudiant ?',
+        message: 'êtes-vous sûr de vouloir supprimer ce livre ?',
         typeMessage: 'none',
         yesButtonVisible: true,
         noButtonVisible: true,
@@ -75,7 +75,7 @@ export class LivreListComponent implements OnInit, OnDestroy{
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
         if (result) {
-          this.LivreService.delete(id)
+          this.livreService.delete(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe(result => {
               this._snackBar.open(result, '', {

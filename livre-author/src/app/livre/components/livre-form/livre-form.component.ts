@@ -8,13 +8,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface LivreFormData {
   isCreateForm: boolean;
-  Livre: Livre;
+  livre: Livre;
 }
 
 @Component({
-  selector: 'app-Livre-form',
-  templateUrl: './Livre-form.component.html',
-  styleUrls: ['./Livre-form.component.scss']
+  selector: 'app-livre-form',
+  templateUrl: './livre-form.component.html',
+  styleUrls: ['./livre-form.component.scss']
 })
 export class LivreFormComponent implements OnDestroy {
 
@@ -25,20 +25,20 @@ export class LivreFormComponent implements OnDestroy {
     'Victor Hugo'
   ];
 
-  LivreForm = this.fb.group({
+  livreForm = this.fb.group({
     id: [0, [Validators.required]],
     title: ['', [Validators.required]],
     author: ['', [Validators.required]],
-    price: ['', [Validators.required]],
+    price: [0, [Validators.required]],
     publicationDate: ['', [Validators.email]]
   });
 
   constructor(public dialogRef: MatDialogRef<LivreFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: LivreFormData, private fb: FormBuilder, 
-    private LivreService : LivreService, private _snackBar: MatSnackBar) {
+    private livreService : LivreService, private _snackBar: MatSnackBar) {
 
       if(!data.isCreateForm){
-        this.setLivreForm(data.Livre);
+        this.setLivreForm(data.livre);
       }
 
   }
@@ -47,13 +47,13 @@ export class LivreFormComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  setLivreForm(Livre: Livre) {
-    this.LivreForm.setValue({
-      id: Livre.id,
-      title: Livre.title,
-      author: Livre.author,
-      price: Livre.price, 
-      publicationDate: Livre.publicationDate
+  setLivreForm(livre: Livre) {
+    this.livreForm.setValue({
+      id: livre.id,
+      title: livre.title,
+      author: livre.author,
+      price: livre.price, 
+      publicationDate: livre.publicationDate
     });
   }
 
@@ -72,11 +72,11 @@ export class LivreFormComponent implements OnDestroy {
   }
 
   onSubmit(){
-    if(this.LivreForm.valid){
-      this.LivreForm.value.publicationDate = new Date(this.LivreForm.value.publicationDate || '').toISOString();
+    if(this.livreForm.valid){
+      this.livreForm.value.publicationDate = new Date(this.livreForm.value.publicationDate || '').toISOString();
       if(this.data.isCreateForm){
-        this.LivreForm.value.id = Date.now() + Math.random();
-        this.LivreService.create(this.LivreForm.value as Livre)
+        this.livreForm.value.id = Date.now() + Math.random();
+        this.livreService.create(this.livreForm.value as Livre)
         .pipe(takeUntil(this.destroy$))
         .subscribe(result => {
           this._snackBar.open(result, '', {
@@ -87,7 +87,7 @@ export class LivreFormComponent implements OnDestroy {
           this.dialogRef.close(true);
         });
       }else{
-        this.LivreService.update(this.LivreForm.value as Livre)
+        this.livreService.update(this.livreForm.value as Livre)
         .pipe(takeUntil(this.destroy$))
         .subscribe(result => {
           this._snackBar.open(result, '', {

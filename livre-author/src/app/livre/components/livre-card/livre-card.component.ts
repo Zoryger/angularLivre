@@ -2,14 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Livre } from '../../models/livre';
 
 @Component({
-  selector: 'app-Livre-card',
-  templateUrl: './Livre-card.component.html',
-  styleUrls: ['./Livre-card.component.scss']
+  selector: 'app-livre-card',
+  templateUrl: './livre-card.component.html',
+  styleUrls: ['./livre-card.component.scss']
 })
 export class LivreCardComponent implements OnInit {
 
   @Input()
-  selectedLivre!: Livre;
+  selectedLivre: Livre | undefined;
   @Output() received: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   ngOnInit(): void {
